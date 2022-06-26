@@ -17,6 +17,13 @@
 #include <fcntl.h>
 #include <stdio.h>
 
+char *free_exit(char	**res)
+{
+	free(*res);
+	*res = NULL;
+	return (NULL);
+}
+
 char	*get_prev_save(char *save)
 {
 	char	*res;
@@ -25,7 +32,7 @@ char	*get_prev_save(char *save)
 	i = 0;
 	while (save[i] != '\0' && save[i] != '\n')
 		i++;
-	res = (char *)malloc((i + (save[i] == '\n') + 1) * sizeof(char));
+	res = (char *)calloc(i + (save[i] == '\n') + 1, sizeof(char));
 	if (res == NULL)
 		return (NULL);
 	i = 0;
@@ -39,7 +46,6 @@ char	*get_prev_save(char *save)
 		res[i] = '\n';
 		i++;
 	}
-	res[i] = '\0';
 	return (res);
 }
 
@@ -57,7 +63,7 @@ char	*get_next_save(char *save)
 		free(save);
 		return (NULL);
 	}
-	res = (char *)malloc((ft_strlen(save) - i + 1) * sizeof(char));
+	res = (char *)calloc(ft_strlen(save) - i + 1, sizeof(char));
 	if (res == NULL)
 		return (NULL);
 	i++;
@@ -67,7 +73,6 @@ char	*get_next_save(char *save)
 		res[i - j] = save[i];
 		i++;
 	}
-	res[i - j] = '\0';
 	free(save);
 	return (res);
 }
@@ -77,20 +82,16 @@ char	*get_now_save(char *save, int fd)
 	char	*now;
 	ssize_t	read_size;
 
-	now = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	now = (char *)calloc((size_t)BUFFER_SIZE + 1, sizeof(char));
 	if (now == NULL)
 		return (NULL);
 	while (ft_strchr(save, '\n') == NULL)
 	{
 		read_size = read(fd, now, BUFFER_SIZE);
 		if (read_size == -1)
-		{
-			free(now);
-			return (NULL);
-		}
+			return (free_exit(&now));
 		if (read_size == 0)
 			break ;
-		now[read_size] = '\0';
 		save = ft_strjoin(save, now);
 		if (save == NULL)
 			break ;

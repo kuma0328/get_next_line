@@ -45,10 +45,10 @@ char	*ft_strjoin(char	*s1, char const *s2)
 	size_t	j;
 
 	if (s1 == NULL)
-		s1 = ft_calloc(1, sizeof(char));
-	res = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+		s1 = (char *)ft_calloc(1, sizeof(char));
+	res = (char *)ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
 	if (res == NULL || s1 == NULL)
-		return (NULL);
+		return (free_exit(&s1));
 	i = 0;
 	j = 0;
 	while (s1[i] != '\0')
@@ -61,7 +61,6 @@ char	*ft_strjoin(char	*s1, char const *s2)
 		res[i + j] = s2[j];
 		j++;
 	}
-	res[i + j] = '\0';
 	free(s1);
 	return (res);
 }
