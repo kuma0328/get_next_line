@@ -64,10 +64,23 @@ char	*get_next_save(char *save)
 		return (NULL);
 	}
 	res = (char *)calloc(ft_strlen(save) - i + 1, sizeof(char));
+	
+	//saveをフリーしないとsaveがNULLで上書きされるのでリークするかも？
 	if (res == NULL)
 		return (NULL);
+	
 	i++;
 	j = i;
+	
+//	j = 0でもいいかも？
+// 	j = 0;
+// 	while (save[i] != '\0')
+// 	{
+// 		res[j] = save[i];
+// 		i++;
+// 		j++;
+// 	}
+	
 	while (save[i] != '\0')
 	{
 		res[i - j] = save[i];
@@ -83,13 +96,19 @@ char	*get_now_save(char *save, int fd)
 	ssize_t	read_size;
 
 	now = (char *)calloc((size_t)BUFFER_SIZE + 1, sizeof(char));
+	
+	//saveをフリーしないとsaveがNULLで上書きされるのでリークするかも？
 	if (now == NULL)
 		return (NULL);
+	
 	while (ft_strchr(save, '\n') == NULL)
 	{
 		read_size = read(fd, now, BUFFER_SIZE);
+		
+		//saveをフリーしないとsaveがNULLで上書きされるのでリークするかも？
 		if (read_size == -1)
 			return (free_exit(&now));
+		
 		if (read_size == 0)
 			break ;
 		save = ft_strjoin(save, now);
