@@ -59,19 +59,17 @@ char	*get_next_save(char *save)
 	while (save[i] != '\0' && save[i] != '\n')
 		i++;
 	if (save[i] == '\0' || save[i + 1] == '\0')
-	{
-		free(save);
-		return (NULL);
-	}
+		return (free_exit(save));
 	res = (char *)calloc(ft_strlen(save) - i + 1, sizeof(char));
 	if (res == NULL)
 		return (NULL);
 	i++;
-	j = i;
+	j = 0;
 	while (save[i] != '\0')
 	{
-		res[i - j] = save[i];
+		res[j] = save[i];
 		i++;
+		j++;
 	}
 	free(save);
 	return (res);
@@ -84,13 +82,13 @@ char	*get_now_save(char *save, int fd)
 
 	now = (char *)calloc((size_t)BUFFER_SIZE + 1, sizeof(char));
 	if (now == NULL)
-		return (NULL);
+		return (free_exit(save));
 	while (ft_strchr(save, '\n') == NULL)
 	{
 		read_size = read(fd, now, BUFFER_SIZE);
 		if (read_size == -1)
-			return (free_exit(&now));
-		if (read_size == 0)
+			free(save);
+		if (read_size == 0 || read_size == -1)
 			break ;
 		save = ft_strjoin(save, now);
 		if (save == NULL)
@@ -112,6 +110,8 @@ char	*get_next_line(int fd)
 		return (NULL);
 	res = get_prev_save(save);
 	save = get_next_save(save);
+	if (res == NULL)
+		free(save);
 	return (res);
 }
 
