@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-// int BUFFER_SIZE = 10;
+int BUFFER_SIZE = 42;
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -90,6 +90,7 @@ char	*get_now_save(char *save, int fd)
 			free(save);
 		if (read_size == 0 || read_size == -1)
 			break ;
+		now[read_size] = '\0';
 		save = ft_strjoin(save, now);
 		if (save == NULL)
 			break ;
@@ -118,7 +119,7 @@ char	*get_next_line(int fd)
 // int main()
 // {
 // 	char *line = "";
-// 	int fd = open("/mnt/c/Users/nhaya/42Tokyo/get_next_line/test.txt",O_RDONLY);
+// 	int fd = open("/mnt/c/Users/nhaya/42Tokyo/get_next_line/get_next_line/test.txt",O_RDONLY);
 // 	int i = 0;
 // 	while (line)
 // 	{
@@ -126,8 +127,8 @@ char	*get_next_line(int fd)
 // 		if (line == NULL) printf("null\n");
 // 		else printf("%s",line);
 // 		i++;
+// 		free(line);
 // 	}
-// 	free(line);
 // 	printf("%d\n",i);
 // 	// while(1);
 // }
