@@ -47,8 +47,11 @@ char	*ft_strjoin(char	*s1, char const *s2)
 	if (s1 == NULL)
 		s1 = (char *)ft_calloc(1, sizeof(char));
 	res = (char *)ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
+	//==========================================
+	//resのmallocが失敗したときにリークしてそう？
 	if (res == NULL || s1 == NULL)
 		return (free_exit(&s1));
+	//==========================================
 	i = 0;
 	j = 0;
 	while (s1[i] != '\0')
