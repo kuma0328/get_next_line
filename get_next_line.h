@@ -21,7 +21,7 @@ char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin(char *s1, char const *s2);
 void	*ft_calloc(size_t count, size_t size);
 void	ft_bzero(void *s, size_t n);
-char *free_exit(char	**res);
+char  *free_exit(char	**res);
 char	*get_next_save(char *save);
 char	*get_prev_save(char *save);
 char	*get_now_save(char *save, int fd);
